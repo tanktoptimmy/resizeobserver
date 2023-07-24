@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Using ResizeObserver</title>
+</head>
+<body>
+  <div id="box">
+    <p>This is something that we want to add an awful lot of stuff into</p>
+  </div>
+  <button id="button">Click Me</button>
+  <script>
+    const box = document.querySelector('#box');
+    const button = document.querySelector('#button');
+
+    let ro = new ResizeObserver(entries => {
+      for (let entry of entries) {
+        let cs = window.getComputedStyle(entry.target);
+        console.log(entry.borderBoxSize[0].blockSize, ' is ', cs.height);
+        console.log(entry.target.getBoundingClientRect())
+      }
+    });
+
+    ro.observe(box);
+
+    const addParagraph = () => {
+      const newElement = document.createElement("p")
+      newElement.append("this is some text")
+      box.append(newElement)
+    }
+
+    button.addEventListener("click", () => {
+      addParagraph()
+    })
+  </script>
+</body>
+</html>
